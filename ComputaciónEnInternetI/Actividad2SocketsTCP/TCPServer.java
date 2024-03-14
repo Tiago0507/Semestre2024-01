@@ -4,30 +4,47 @@ import java.io.*;
 public class TCPServer {
   public static void main(String[] args) throws IOException{
     ServerSocket serverSocket = new ServerSocket(6789);
-    Socket sc = null; //Para aceptar al cliente
     System.out.println("Servidor iniciado...");
-    PrintWriter out;
-    BufferedReader in;
+  
     while(true) {
       System.out.println("Esperando conexión...");
-      sc = serverSocket.accept();
+      Socket clientSocket = serverSocket.accept();
 
-      out = new PrintWriter(sc.getOutputStream(), true);
-      in = new BufferedReader(new InputStreamReader(sc.getInputStream()));
+      //Crear un nuevo hilo para manejar al cliente
+      Thread clientThread = new ClientHandlerThread(clientSocket);
+      clientThread.start();
+    }
+  }
 
-      String mensajeCliente = in.readLine();
-      System.out.println("Mensaje recibido del cliente: " + mensajeCliente);
+  static class ClientHandlerThread extends Thread {
+    private Socket clientSocket;
 
-      //Retardo del servidor antes de responder una solicitud del cliente
+    public ClientHandlerThread(Socket socket) {
+      this.clientSocket = socket;
+    }
+
+    @Override
+    public void run() {
       try {
-        Thread.sleep(5000);
-      } catch(InterruptedException e) {
+        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+        String mensajeCliente = in.readLine();
+        System.out.println("Mensaje recibido del cliente: " + mensajeCliente);
+
+        //Retardo antes de responder al cliente
+        try {
+          Thread.sleep(10000);
+        } catch(InterruptedException e) {
+          e.printStackTrace();
+        }
+
+        out.println("Mensaje modificado: " + mensajeCliente.toUpperCase());
+
+        clientSocket.close();
+      } catch(IOException e) {
         e.printStackTrace();
       }
-
-      out.println("Mensaje modificado: " + mensajeCliente.toUpperCase());
-
-      sc.close();
     }
   }
 }
