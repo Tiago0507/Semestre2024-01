@@ -2,49 +2,50 @@ import java.net.*;
 import java.io.*;
 
 public class TCPServer {
+  private static boolean servidorOcupado = false;
+
   public static void main(String[] args) throws IOException{
     ServerSocket serverSocket = new ServerSocket(6789);
+    Socket sc = null; //Para aceptar al cliente
     System.out.println("Servidor iniciado...");
-  
+    PrintWriter out;
+    BufferedReader in;
     while(true) {
-      System.out.println("Esperando conexión...");
-      Socket clientSocket = serverSocket.accept();
-
-      //Crear un nuevo hilo para manejar al cliente
-      Thread clientThread = new ClientHandlerThread(clientSocket);
-      clientThread.start();
-    }
-  }
-
-  static class ClientHandlerThread extends Thread {
-    private Socket clientSocket;
-
-    public ClientHandlerThread(Socket socket) {
-      this.clientSocket = socket;
-    }
-
-    @Override
-    public void run() {
-      try {
-        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-        String mensajeCliente = in.readLine();
-        System.out.println("Mensaje recibido del cliente: " + mensajeCliente);
-
-        //Retardo antes de responder al cliente
+      // Verificar si el servidor está ocupado
+      if (servidorOcupado) {
+        System.out.println("Servidor ocupado. Espere por favor...");
         try {
-          Thread.sleep(10000);
+          Thread.sleep(5000);
         } catch(InterruptedException e) {
           e.printStackTrace();
         }
+        continue; // Ir al siguiente ciclo del bucle while
+      }
+      
+      System.out.println("Esperando conexión...");
+      sc = serverSocket.accept();
+      servidorOcupado = true;
 
-        out.println("Mensaje modificado: " + mensajeCliente.toUpperCase());
+      out = new PrintWriter(sc.getOutputStream(), true);
+      in = new BufferedReader(new InputStreamReader(sc.getInputStream()));
 
-        clientSocket.close();
-      } catch(IOException e) {
+      String mensajeCliente = in.readLine();
+      System.out.println("Mensaje recibido del cliente: " + mensajeCliente);
+
+      // Retardo del servidor antes de responder una solicitud del cliente
+      try {
+        Thread.sleep(5000);
+      } catch(InterruptedException e) {
         e.printStackTrace();
       }
+
+      out.println("Mensaje modificado: " + mensajeCliente.toUpperCase());
+
+      sc.close();
+      servidorOcupado = false; // Liberar el servidor después de atender la solicitud
     }
   }
 }
+
+
+
