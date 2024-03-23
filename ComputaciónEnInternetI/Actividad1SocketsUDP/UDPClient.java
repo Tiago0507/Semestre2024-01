@@ -10,15 +10,15 @@ public class UDPClient {
     /*Se obtiene la dirección IP del servidor al que se enviarán los datos. localhost hace referencia 
      * a la dirección IP de la propia máquina
      */
-    InetAddress IPAddress = InetAddress.getByName("localhost");
+    InetAddress IPAddress = InetAddress.getByName("192.168.74.228");
 
     /*Este array tendrá los datos que se enviarán al servidor */
-    byte[] sendData = "Hola desde el cliente".getBytes();
+    byte[] sendData = "Hoy van a ganar el parcial".getBytes();
 
     /*Este objeto contiene los datos de sendData, la longitud de estos datos, la dirección IP del servidor
      * previamente encontrada y el número del puerto que en este caso será el 9876
      */
-    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
+    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 10000);
 
     /*Esta línea permite enviar el datagrama al servidor. El método send ya está en el paquete de java.net */
     clientSocket.send(sendPacket);

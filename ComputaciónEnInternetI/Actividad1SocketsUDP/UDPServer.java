@@ -4,7 +4,7 @@ public class UDPServer {
 		
 		/*Esta línea se usa para recibir paquetes de datos mediante el protocolo UDP en el puerto 9876 (pero
 		podría ser cualquier puerto) */
-  	DatagramSocket serverSocket = new DatagramSocket(9876);
+  	DatagramSocket serverSocket = new DatagramSocket(10000);
 
 		/*Este array de 1 kB se usa para almacenar los datos recibidos del cliente */
     byte[] receiveData = new byte[1024];
