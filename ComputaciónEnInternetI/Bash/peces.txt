@@ -1,0 +1,10 @@
+tilapia
+trucha
+bagre
+bocachico
+sardina
+cachama
+pargorojo
+tiburon
+delfin
+pezespada
