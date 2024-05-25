@@ -1,24 +1,65 @@
-function sayHello() {
-    const nameInput = document.getElementById('nameInput');
-    const name = nameInput.value.trim();
+function sumar() {
+    const numberInput1 = document.getElementById('numberInput1');
+    const numberInput2 = document.getElementById('numberInput2');
+    
+    const number1 = parseFloat(numberInput1.value);
+    const number2 = parseFloat(numberInput2.value);
 
-    if (name === '') {
-        alert('Ingrese su nombre!');
+    if (isNaN(number1) || isNaN(number2)) {
+        alert("Ingresa un valor válido")
     } else {
-        const outputDiv = document.getElementById('output');
-        outputDiv.textContent = `Hola, ${name}!`;
+        const outputDiv = document.getElementById('output')
+        result = number1 + number2
+        outputDiv.textContent = `La suma entre ${number1} y ${number2} es ${result}.`
     }
 }
 
-function doubleNumber() {
-    const numberInput = document.getElementById('numberInput');
-    const number = parseFloat(numberInput.value);
+function restar() {
+    const numberInput1 = document.getElementById('numberInput1');
+    const numberInput2 = document.getElementById('numberInput2');
+    
+    const number1 = parseFloat(numberInput1.value);
+    const number2 = parseFloat(numberInput2.value);
 
-    if (isNaN(number)) {
-        alert('Ingresar un valor numerico!');
+    if (isNaN(number1) || isNaN(number2)) {
+        alert("Ingresa un valor válido")
     } else {
-        const outputDiv = document.getElementById('output');
-        const doubledNumber = number * 2;
-        outputDiv.textContent = `Doble de ${number} es ${doubledNumber}`;
+        const outputDiv = document.getElementById('output')
+        result = number1 - number2
+        outputDiv.textContent = `La resta entre ${number1} y ${number2} es ${result}.`
+    }
+}
+
+function multiplicar() {
+    const numberInput1 = document.getElementById('numberInput1');
+    const numberInput2 = document.getElementById('numberInput2');
+    
+    const number1 = parseFloat(numberInput1.value);
+    const number2 = parseFloat(numberInput2.value);
+
+    if (isNaN(number1) || isNaN(number2)) {
+        alert("Ingresa un valor válido")
+    } else {
+        const outputDiv = document.getElementById('output')
+        result = number1 * number2
+        outputDiv.textContent = `La multiplicación entre ${number1} y ${number2} es ${result}.`
+    }
+}
+
+function dividir() {
+    const numberInput1 = document.getElementById('numberInput1');
+    const numberInput2 = document.getElementById('numberInput2');
+    
+    const number1 = parseFloat(numberInput1.value);
+    const number2 = parseFloat(numberInput2.value);
+
+    if (isNaN(number1) || isNaN(number2)) {
+        alert("Ingresa un valor válido")
+    } else if (number2 == 0){
+        alert("La división entre 0 no está definida")
+    } else {
+        const outputDiv = document.getElementById('output')
+        result = number1 / number2
+        outputDiv.textContent = `La división entre ${number1} y ${number2} es ${result}.`
     }
 }

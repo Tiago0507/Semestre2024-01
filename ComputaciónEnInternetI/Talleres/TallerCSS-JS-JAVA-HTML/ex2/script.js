@@ -1,8 +1,7 @@
-const apiKey = 'API KEY'; // Reemplazar con su llave
-const city = 'Cali'; // reemplazar con la ciudad
-
-async function getWeatherForecast() {
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`);
+async function getWeatherForecast(city, language) {
+    const apiKey = '351d61186eae89656b4aa420a8e29673'; // Reemplazar con su llave
+    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`
+    const response = await fetch(apiUrl);
     if (!response.ok) {
         throw new Error('Network response was not ok');
     }
@@ -23,7 +22,7 @@ function plotForecast(data) {
         temperatures.push(forecast.main.temp);
     }
 
-    const chart = new Chart(ctx, {
+    new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
@@ -55,12 +54,20 @@ function plotForecast(data) {
 }
 
 async function main() {
+    const city = document.getElementById('city-input').value;
+    const language = document.getElementById('language-input').value;
+
+    if (!city || !language) {
+        alert('Por favor, ingrese una ciudad y un idioma.');
+        return;
+    }
+
     try {
-        const forecastData = await getWeatherForecast();
+        const forecastData = await getWeatherForecast(city, language);
         plotForecast(forecastData);
     } catch (error) {
-        console.error('Se presento un problema con la operación fetch:', error);
+        console.error('Se presentó un problema con la operación fetch:', error);
     }
 }
 
-main();
+// main();
